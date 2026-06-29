@@ -5,12 +5,13 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Upgrade pip to latest version to support modern build backends
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip setuptools wheel
 
 COPY backend/pyproject.toml ./pyproject.toml
-# Deployer runs the app with uvicorn — install even if the repo only lists fastapi.
-RUN pip install --no-cache-dir -e . \
+
+# Install dependencies from pyproject.toml without editable mode.
+# Use pip-tools or direct pip install with pyproject support.
+RUN pip install --no-cache-dir . \
     && pip install --no-cache-dir "uvicorn[standard]>=0.24"
 
 COPY backend . .
