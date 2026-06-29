@@ -7,14 +7,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
 
 RUN pip install --upgrade pip setuptools wheel
 
-COPY backend/pyproject.toml ./pyproject.toml
+# Copy the entire backend directory so pyproject.toml's build backend
+# can inspect the source tree (app/ or src/) during metadata generation.
+COPY backend/ .
 
-# Install dependencies from pyproject.toml without editable mode.
-# Use pip-tools or direct pip install with pyproject support.
+# Install the project and uvicorn.
+# Non-editable install resolves dependencies from pyproject.toml.
 RUN pip install --no-cache-dir . \
     && pip install --no-cache-dir "uvicorn[standard]>=0.24"
-
-COPY backend . .
 
 ENV PYTHONPATH=/app
 
