@@ -2,16 +2,16 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
-COPY backend/pyproject.toml ./backend/pyproject.toml
+COPY backend ./backend
 
 RUN pip install --no-cache-dir pip-tools && \
     pip install --no-cache-dir -e ./backend && \
     pip install --no-cache-dir "uvicorn[standard]>=0.24"
-
-COPY backend ./backend
 
 WORKDIR /app/backend
 ENV PYTHONPATH=/app/backend
