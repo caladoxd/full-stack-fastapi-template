@@ -6,7 +6,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
     && rm -rf /var/lib/apt/lists/*
 
 COPY backend/pyproject.toml ./pyproject.toml
-COPY backend/poetry.lock ./poetry.lock 2>/dev/null || true
+
+# Copy poetry.lock if it exists; if not, proceed without it
+# (Docker doesn't support conditional COPY, so we install without it)
 
 # Install poetry and dependencies from pyproject.toml
 RUN pip install --no-cache-dir poetry \
