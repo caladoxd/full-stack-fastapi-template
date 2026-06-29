@@ -5,21 +5,17 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-COPY backend/pyproject.toml ./pyproject.toml
-
-# Copy poetry.lock if it exists; if not, proceed without it
-# (Docker doesn't support conditional COPY, so we install without it)
-
-# Install poetry and dependencies from pyproject.toml
-RUN pip install --no-cache-dir poetry \
-    && poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi \
+COPY requirements.txt ./requirements.txt
+# Deployer runs the app with uvicorn — install even if the repo only lists fastapi.
+RUN pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir "uvicorn[standard]>=0.24"
 
-COPY backend/ .
+COPY . .
 
-WORKDIR /app
-ENV PYTHONPATH=/app
+
+WORKDIR /app/backend
+ENV PYTHONPATH=/app/backend
+
 
 EXPOSE 8000
 
