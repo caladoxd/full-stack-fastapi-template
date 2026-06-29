@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends build-essential
     && rm -rf /var/lib/apt/lists/*
 
 COPY backend/pyproject.toml ./backend/pyproject.toml
-COPY backend/poetry.lock ./backend/poetry.lock
 
 RUN pip install --no-cache-dir pip-tools && \
     pip install --no-cache-dir -e ./backend && \
