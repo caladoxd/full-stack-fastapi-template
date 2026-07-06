@@ -2,7 +2,7 @@
 FROM node:20-alpine AS build
 WORKDIR /app
 
-COPY frontend/package*.json ./
+COPY package*.json ./
 
 # Drop any host-generated lockfile before installing: lockfiles often pin
 # platform-specific optional native binaries (e.g. *-win32-*, *-darwin-*) that
@@ -10,7 +10,7 @@ COPY frontend/package*.json ./
 # fetches the Linux-native variants.
 RUN rm -f package-lock.json && npm install
 
-COPY frontend/ ./
+COPY . .
 
 RUN npm run build --if-present
 # Normalise the build output: Vite emits dist/, CRA emits build/.

@@ -15,14 +15,14 @@ concurrency:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: fastapi-staging
-  ECS_CLUSTER: fastapi-staging
-  ECS_SERVICE: staging-fastapi
-  CONTAINER_NAME: fastapi
+  ECR_REPOSITORY: template-staging
+  ECS_CLUSTER: template-staging
+  ECS_SERVICE: staging-template
+  CONTAINER_NAME: template
 
-  FRONTEND_ECR_REPOSITORY: fastapi-staging-frontend
-  FRONTEND_ECS_SERVICE: staging-fastapi-frontend
-  FRONTEND_CONTAINER_NAME: fastapi-frontend
+  FRONTEND_ECR_REPOSITORY: template-staging-frontend
+  FRONTEND_ECS_SERVICE: staging-template-frontend
+  FRONTEND_CONTAINER_NAME: template-frontend
 
 
 jobs:
@@ -74,7 +74,7 @@ jobs:
       - name: Download current task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition tsk-staging-fastapi \
+            --task-definition tsk-staging-template \
             --query taskDefinition > task-definition.json
 
       - name: Update task definition with new image
@@ -109,7 +109,7 @@ jobs:
       - name: Download frontend task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition tsk-staging-fastapi-frontend \
+            --task-definition tsk-staging-template-frontend \
             --query taskDefinition > frontend-task-definition.json
 
       - name: Update frontend task definition with new image
