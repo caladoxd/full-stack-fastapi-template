@@ -15,14 +15,14 @@ concurrency:
 
 env:
   AWS_REGION: us-east-1
-  ECR_REPOSITORY: example-staging
-  ECS_CLUSTER: example-staging
-  ECS_SERVICE: staging-example
-  CONTAINER_NAME: example
+  ECR_REPOSITORY: testing-staging
+  ECS_CLUSTER: testing-staging
+  ECS_SERVICE: staging-testing
+  CONTAINER_NAME: testing
 
-  FRONTEND_ECR_REPOSITORY: example-staging-frontend
-  FRONTEND_ECS_SERVICE: staging-example-frontend
-  FRONTEND_CONTAINER_NAME: example-frontend
+  FRONTEND_ECR_REPOSITORY: testing-staging-frontend
+  FRONTEND_ECS_SERVICE: staging-testing-frontend
+  FRONTEND_CONTAINER_NAME: testing-frontend
 
 
 jobs:
@@ -74,7 +74,7 @@ jobs:
       - name: Download current task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition tsk-staging-example \
+            --task-definition tsk-staging-testing \
             --query taskDefinition > task-definition.json
 
       - name: Update task definition with new image
@@ -109,7 +109,7 @@ jobs:
       - name: Download frontend task definition
         run: |
           aws ecs describe-task-definition \
-            --task-definition tsk-staging-example-frontend \
+            --task-definition tsk-staging-testing-frontend \
             --query taskDefinition > frontend-task-definition.json
 
       - name: Update frontend task definition with new image
